@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container content-space-2">
+  {% if messages %}
+      {% for message in messages %}
+      <div class="col-md-6 offset-md-3">
+        <div class="alert alert-{{ message.tags }}" role="alert">
+          {{ message }}
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
+  <div class="row justify-content-md-between align-items-sm-center">
+    <div class="col-8 col-sm-6 col-md-5 mb-5 mb-sm-0">
+      <img class="img-fluid" src="{% static 'assets/svg/illustrations/oc-project-development.svg' %}" alt="Image Description">
+    </div>
+
+    <div class="col-sm-6">
+      <div class="mb-5">
+        <h1 class="display-4 mb-3">
+          Unlock economic
+          <br>
+          <span class="text-primary text-highlight-warning">
+            <span class="js-typedjs"
+                  data-hs-typed-options='{
+                    "strings": ["knowledge.", "insights.", "learnings."],
+                    "typeSpeed": 90,
+                    "loop": true,
+                    "backSpeed": 30,
+                    "backDelay": 2500
+                  }'></span>
+          </span>
+        </h1>
+        <p class="lead">Use economic datasets to improve your research and learnings.</p>
+      </div>
+
+      <div class="d-grid d-md-flex gap-3 align-items-md-center">
+        <a class="btn btn-soft-primary btn-sm" href="#datasets">Explore Datasets <i class="bi bi-arrow-down-circle"></i></a>
+        <a class="btn btn-soft-success btn-sm" href="{% url 'register' %}">Contribute Insights <i class="bi bi-box-arrow-up-right"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="border-top mx-auto mt-10" style="max-width: 25rem;" id="datasets"></div>
+<div class="container content-space-2">
+  <div class="w-md-75 text-center mx-md-auto mb-9">
+    <h2>Featured Datasets</h2>
+    <p>Discover datasets to power your economics knowledge and research.</p>
+  </div>
+  <div class="row mt-10">
+    {% if datasets|length > 0 %}
+      {% for dataset in datasets %}
+      <div class="col-lg-6 d-flex align-items-stretch">
+        <div class="card my-3">
+          <div class="card-body">
+            <span class="card-subtitle"><span class="badge bg-soft-success text-success">Economy</span></span>
+            <h3 class="card-title">{{dataset.name}}</h3>
+            <p class="card-text">{{dataset.description|truncatechars:160}}</p>
+            <p>
+              {% for topic in dataset.topics.all %}
+                <span class="badge bg-soft-secondary text-secondary rounded-pill me-1">{{topic.title}}</span>
+              {% endfor %}
+            </p>
+            <span class="d-flex">
+              <span class="ms-auto">
+                <a class="card-link" href="{% url 'data' slug=dataset.slug %}">View Dataset <i class="bi-chevron-right small ms-1"></i></a>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p>No dataset available publically! Please check again later.</p>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock%}

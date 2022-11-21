@@ -1,0 +1,302 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container content-space-2">
+    {% if messages %}
+      {% for message in messages %}
+      <div class="col-md-6 offset-md-3">
+        <div class="alert alert-{{ message.tags }}" role="alert">
+          {{ message }}
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
+  <div class="container content-space-1 content-space-t-lg-0 content-space-b-lg-2 mt-5">
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="d-grid gap-3 gap-lg-5">
+          <div class="card card-sm">
+            <div class="card-header d-sm-flex justify-content-sm-between align-items-sm-center border-bottom">
+              <h3 class="card-header-title">{{dataset.name}} Datasets</h3>
+              <span><span class="badge bg-soft-success text-success">{{dataset.category.title}}</span></span>
+            </div>
+            <div class="card-body">
+              <div class="list-group list-group-flush list-group-no-gutters">
+                <small class="card-subtitle">
+                  {% for topic in dataset.topics.all %}
+                    <span class="badge bg-soft-info text-info rounded-pill me-1">{{topic.title}}</span>
+                  {% endfor %}
+                </small>
+                <div class="list-group-item">
+                  {{dataset.description}}
+                </div>
+                <div class="list-group-item">
+                  <img class="card-img" src="{% get_media_prefix %}{{dataset.image}}" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="card flex-grow-1 mb-5">
+          <div class="card-body">
+            <span class="text-cap">Access via APIs</span>
+            <ul class="nav nav-sm nav-tabs nav-vertical mb-4">
+              <li class="nav-item">
+                <a class="nav-link " href="#download-data">
+                <i class="bi-box-arrow-up-right nav-icon"></i> EcoSense API
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#download-data">
+                <i class="bi-sliders nav-icon"></i> Customize API
+                </a>
+              </li>
+            </ul>
+            <span class="text-cap">Access Data</span>
+            <ul class="nav nav-sm nav-tabs nav-vertical mb-4">
+              <li class="nav-item">
+                <a class="nav-link" href="#download-data">
+                <i class="bi-filetype-json nav-icon"></i> Download JSON
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#download-data">
+                <i class="bi-filetype-py nav-icon"></i> Download Jupyter
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="https://aws.amazon.com/marketplace/pp/prodview-3i7zym3vhesou?sr=0-17&ref_=beagle&applicationId=AWSMPContessa#overview" target="_blank">
+                <i class="bi-laptop nav-icon"></i> AWS DataExchange
+                </a>
+              </li>
+            </ul>
+            <span class="text-cap">Econometric Export</span>
+            <ul class="nav nav-sm nav-tabs nav-vertical mb-4">
+              <li class="nav-item">
+                <a class="nav-link " href="#">
+                <i class="bi-graph-up-arrow nav-icon"></i> Add To E-VIEWS
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#">
+                <i class="bi-bar-chart-line nav-icon"></i> Add To GRETL
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card flex-grow-1 mb-5">
+          <div class="card-body">
+            <span class="text-cap">Contribute</span>
+            <ul class="nav nav-sm nav-tabs nav-vertical mb-4">
+              <li class="nav-item">
+                <a class="nav-link " href="{% url 'add-insight' %}">
+                <i class="bi-plus nav-icon"></i> Add Your Insights
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#">
+                <i class="bi-file-earmark-text nav-icon"></i> Request Data Update
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://github.com/ksh7/ecosense/issues">
+                <i class="bi-github nav-icon"></i> Create Github Issue
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-lg-12">
+        <div class="d-grid gap-3 gap-lg-5">
+          <div class="card card-sm">
+            <div class="card-header d-flex justify-content-between align-items-center border-bottom">
+              <h5 class="card-header-title">Related Datasets - Powered by AWS Data Exchange</h5>
+            </div>
+            <div class="card-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Source</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Data Filters</th>
+                    <th scope="col">AWS Endpoint</th>
+                    <th scope="col">Sample</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for source in dataset.data_sources.all %}
+                    <tr>
+                      <td>#{{source.id}}</td>
+                      <td>{{source.name}}</td>
+                      <td>
+                        {% for topic in source.topics.all %}
+                          <span class="badge bg-soft-secondary text-secondary rounded-pill me-1">{{topic.title}}</span>
+                        {% endfor %}
+                      </td>
+                      <td>{{source.description}}</td>
+                      <td>{{source.filters}}</td>
+                      <td>{{source.aws_endpoint}}</td>
+                      <td>
+                        <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modaldata-{{source.id}}">
+                        View <i class="bi bi-eye"></i></button>
+                        <div id="modaldata-{{source.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">{{source.description}} - Sample Data</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <canvas id="chart-modaldata-{{source.id}}"></canvas>
+                                <script>
+                                  var ctx = document.getElementById("chart-modaldata-{{source.id}}");
+                                  var myChart = new Chart(ctx, {
+                                    type: 'line',
+                                    data: {
+                                      labels: {{source.sample_graph_data.labels | safe}},
+                                      datasets: [{
+                                        label: "{{source.sample_graph_data.title | safe}}",
+                                        lineTension: 0.2,
+                                        data: {{source.sample_graph_data.data | safe}},
+                                        backgroundColor: "rgba(255, 99, 132, 0.2)",
+                                        borderColor: "rgba(255, 99, 132, 1)",
+                                        borderWidth: 1
+                                      }]
+                                    },
+                                    options: {
+                                      scales: {
+                                        yAxes: [{
+                                          display: true,
+                                          gridLines: {
+                                            display: false,
+                                            drawBorder: true,
+                                          },
+                                          ticks: {
+                                            beginAtZero: true
+                                          }
+                                        }],
+                                        xAxes: [{
+                                          display: true,
+                                          gridLines: {
+                                            display: false,
+                                            drawBorder: true,
+                                          }
+                                        }]
+                                      }
+                                    }
+                                  });
+                                </script>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-white" data-bs-dismiss="modal">Close</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mt-5" id="download-data">
+      <div class="col-lg-4">
+        <div class="d-grid gap-3 gap-lg-5">
+          <div class="card card-sm">
+            <div class="card-header d-flex justify-content-between align-items-center border-bottom">
+              <h5 class="card-header-title">Access Data Sources</h5>
+            </div>
+            <div class="card-body">
+              <a class="btn btn-primary btn-sm mt-3" href="/{{dataset.api_endpoint}}" target="_blank" >Get Complete Dataset via API <i class="bi bi-box-arrow-up-right ml-2"></i></a>
+              <a class="btn btn-primary btn-sm mt-3" href="/json_file/{{dataset.slug}}">Get Complete Dataset As JSON <i class="bi bi-filetype-json ml-2"></i></a>
+              <a class="btn btn-primary btn-sm mt-3">Get Complete Dataset As Jupyter <i class="bi bi-filetype-py ml-2"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="d-grid gap-3 gap-lg-5">
+          <div class="card card-sm">
+            <div class="card-header d-flex justify-content-between align-items-center border-bottom">
+              <h5 class="card-header-title">Customize API by Data Sources</h5>
+            </div>
+            <div class="card-body">
+              <form action="{% url 'api_custom' %}" method="POST" class="form">
+                {% csrf_token %}
+                <input  class="hidden" name="dataset_name" value="{{dataset.slug}}" type="hidden">
+                <div class="tom-select-custom tom-select-custom-with-tags">
+                  <select name="datasource_ids" class="js-select form-select" autocomplete="off" multiple data-hs-tom-select-options='{"placeholder": "Select a dataset..."}'>
+                    <option value="">Select a dataset...</option>
+                    {% for source in dataset.data_sources.all %}
+                    <option value="{{source.id}}">{{source}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <button class="btn btn-primary btn-sm mt-3" type="submit">Get Customized Dataset As Custom API <i class="bi bi-box-arrow-up-right"></i></button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mt-5">
+      <div class="col-lg-12">
+        <div class="d-grid gap-3 gap-lg-5">
+          <div class="card card-sm">
+            <div class="card-header d-flex justify-content-between align-items-center border-bottom">
+              <h5 class="card-header-title">Applied Topics Around <i>{{dataset.name}}</i></h5>
+            </div>
+            <div class="card-body">
+              <p>{{dataset.applied_questions|safe }}</p>
+            </div>
+          </div>
+          <div class="card card-sm">
+            <div class="card-header d-flex justify-content-between align-items-center border-bottom">
+              <h5 class="card-header-title">Research Insights For <i>{{dataset.name}}</i></h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                {% if dataset.get_public_researchinsights|length > 0 %}
+                  {% for insight in dataset.get_public_researchinsights %}
+                  <div class="col-md-6 col-lg-6">
+                    <div class="card card-bordered card-transition mb-5">
+                      <div class="card-body">
+                        <p><span class="text-dark fw-semi-bold"><i class="bi bi-bar-chart"></i> <a href="{% url 'view-insight' id=insight.id %}">{{insight.title}}</a></span></p>
+                        <p><small><strong>Summary:</strong> {{insight.finding}}</small></p>
+                        <p><small><strong>Submitted By:</strong> {{insight.user.first_name}} {{insight.user.last_name}}</small></p>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                {% else %}
+                  <p>No research insights available for <strong>{{dataset.name}}</strong> topic publically! You can add your own.</p>
+                {% endif %}
+              </div>
+              <div class="row">
+                <div row="col-lg-4 offset-lg-4">
+                  <a class="btn btn-success btn-sm mt-3" href="{% url 'add-insight' %}">Add Your Insights <i class="bi bi-plus"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock%}

@@ -1,0 +1,118 @@
+<header id="header" class="navbar navbar-expand-lg navbar-end navbar-light">
+  <div class="container">
+    <nav class="js-mega-menu navbar-nav-wrap">
+      <a class="navbar-brand" href="/" aria-label="EcoSense"><strong>EcoSense</strong></a>
+      <div class="navbar-nav-wrap-secondary-content">
+        <div class="dropdown dropdown-course-search d-lg-none d-inline-block">
+          <a class="btn btn-ghost-secondary btn-sm btn-icon" href="#" id="navbarCourseSearchDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi-search"></i>
+          </a>
+          <div class="dropdown-menu dropdown-card" aria-labelledby="navbarCourseSearchDropdown">
+            <div class="card card-sm">
+              <div class="card-body">
+                <form class="input-group input-group-merge">
+                  <input type="text" class="form-control" placeholder="What do you want to learn?" aria-label="What do you want to learn?">
+                  <div class="input-group-append input-group-text">
+                    <i class="bi-search"></i>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-default">
+          <i class="bi-list"></i>
+        </span>
+        <span class="navbar-toggler-toggled">
+          <i class="bi-x"></i>
+        </span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+        
+          <li class="nav-item d-none d-lg-inline-block ">
+            <form class="input-group input-group-merge">
+              <div class="input-group-prepend input-group-text">
+                <i class="bi-search"></i>
+              </div>
+              <input type="text" class="form-control" placeholder="Search datasets, topics" aria-label="Search datasets, topics">
+            </form>
+          </li>
+          <li class="hs-has-sub-menu nav-item">
+            <a id="coursesMegaMenu" class="hs-mega-menu-invoker nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi-bar-chart-line me-2"></i> Datasets</a>
+            <div class="hs-sub-menu dropdown-menu" aria-labelledby="coursesMegaMenu">
+              <div class="hs-has-sub-menu nav-item">
+                <a class="hs-mega-menu-invoker dropdown-item"><i class="bi bi-journal-richtext"></i> Lorenz Curve</a>
+              </div>
+              <div class="hs-has-sub-menu nav-item">
+                <a class="hs-mega-menu-invoker dropdown-item"><i class="bi bi-journal-richtext"></i> Laffer Curve</a>
+              </div>
+              <div class="hs-has-sub-menu nav-item">
+                <a class="hs-mega-menu-invoker dropdown-item"><i class="bi bi-journal-richtext"></i> Hicks and Kaldor's Welfare Criteria</a>
+              </div>
+              <div class="hs-has-sub-menu nav-item">
+                <a class="hs-mega-menu-invoker dropdown-item"><i class="bi bi-journal-richtext"></i> Production Possibility Frontier</a>
+              </div>
+              <div class="hs-has-sub-menu nav-item">
+                <a class="hs-mega-menu-invoker dropdown-item"><i class="bi bi-journal-richtext"></i> Keyne's Theory on Demand for Money</a>
+              </div>
+              <div class="hs-has-sub-menu nav-item">
+                <a class="hs-mega-menu-invoker dropdown-item"><i class="bi bi-journal-richtext"></i> Gini Coefficient</a>
+              </div>
+            </div>
+          </li>
+          <li class="hs-has-sub-menu nav-item">
+            <a id="coursesMegaMenu" class="hs-mega-menu-invoker nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi-journals me-2"></i> Topics</a>
+            <div class="hs-sub-menu dropdown-menu" aria-labelledby="coursesMegaMenu">
+              <div class="hs-has-sub-menu nav-item">
+                <a class="hs-mega-menu-invoker dropdown-item"><i class="bi bi-card-text"></i> Demand & Supply</a>
+              </div>
+              <div class="hs-has-sub-menu nav-item">
+                <a class="hs-mega-menu-invoker dropdown-item"><i class="bi bi-card-text"></i> Income & Wealth</a>
+              </div>
+              <div class="hs-has-sub-menu nav-item">
+                <a class="hs-mega-menu-invoker dropdown-item"><i class="bi bi-card-text"></i> Inequality</a>
+              </div>
+              <div class="hs-has-sub-menu nav-item">
+                <a class="hs-mega-menu-invoker dropdown-item"><i class="bi bi-card-text"></i> Quality of Life</a>
+              </div>
+              <div class="hs-has-sub-menu nav-item">
+                <a class="hs-mega-menu-invoker dropdown-item"><i class="bi bi-card-text"></i> Welfare Economics</a>
+              </div>
+              <div class="hs-has-sub-menu nav-item">
+                <a class="hs-mega-menu-invoker dropdown-item"><i class="bi bi-card-text"></i> Resource & Environment</a>
+              </div>
+            </div>
+          </li>
+
+
+          {% if request.user.is_authenticated %}
+            <li class="hs-has-sub-menu nav-item">
+              <a id="coursesMegaMenu" class="hs-mega-menu-invoker nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi-person-circle me-2"></i> My Profile</a>
+              <div class="hs-sub-menu dropdown-menu" aria-labelledby="coursesMegaMenu">
+                <div class="hs-has-sub-menu nav-item">
+                  <a class="hs-mega-menu-invoker dropdown-item" href="{% url 'my-insights' %}"><i class="bi-card-text dropdown-item-icon"></i> My Insights</a>
+                </div>
+                <div class="hs-has-sub-menu nav-item">
+                  <a class="hs-mega-menu-invoker dropdown-item" href="#"><i class="bi-sliders dropdown-item-icon"></i> Settings</a>
+                </div>
+                <div class="hs-has-sub-menu nav-item">
+                  <a class="hs-mega-menu-invoker dropdown-item" href="{% url 'logout' %}" ><i class="bi-box-arrow-right dropdown-item-icon"></i> Logout</a>
+                </div>
+              </div>
+            </li>
+          {% endif %}
+
+          
+          {% if not request.user.is_authenticated %}
+          <li class="hs-has-sub-menu">
+            <a class="hs-mega-menu-invoker btn btn-sm btn-primary" href="{% url 'login' %}" >Login</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+  </div>
+</header>

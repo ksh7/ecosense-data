@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load custom_html_filters %}
+
+{% block content %}
+<div class="container content-space-1">
+  {% if messages %}
+    {% for message in messages %}
+    <div class="col-md-6 offset-md-3">
+      <div class="alert alert-{{ message.tags }}" role="alert">
+        {{ message }}
+      </div>
+    </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="w-md-75 text-center mx-md-auto mb-9">
+    <h3>{{object.title}}</h3>
+  </div>
+  
+  <div class="row mt-10">
+    <div class="card my-3">
+      <div class="card-body">
+        <span class="card-subtitle">{% if object.is_public %}<span class="badge bg-soft-success text-success">Public - Visible To All</span>{% else %}<span class="badge bg-soft-danger text-danger">Private</span>{% endif %}</span>
+        <h3 class="card-title">{{object.title}}</h3>
+        <p class="mt-5"><span class="text-dark fw-semi-bold">Economy Topic:</span> {{object.dataset.name}}</p>
+        <p><span class="text-dark fw-semi-bold">Researcher:</span> {{object.user.first_name}} {{object.user.last_name}}</p>
+        <p><span class="text-dark fw-semi-bold">Key Insights:</span></p>
+        <p class="card-text">{{object.finding}}</p>
+        
+        {% if object.graph_data_available %}
+        <p><span class="text-dark fw-semi-bold">Graphical Representation of Insights:</span></p>
+        <div class="col-lg-10 offset-lg-1">
+          <div class="card card-bordered my-5">
+            <div class="card-body">  
+            <canvas id="chart-{{object.dataset.slug}}"></canvas>
+            <div class="text-center">
+              <p><span class="text-dark fw-semi-bold">{{object.graph_data.title}}</span></p>
+            </div>
+            <script>
+              var ctx = document.getElementById("chart-{{object.dataset.slug}}");
+              var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                  labels: {{object.graph_data.labels | safe}},
+                  datasets: [{
+                    label: `{{object.dataset.name }}`,
+                    lineTension: 0.2,
+                    data: {{object.graph_data.data | safe}},
+                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    borderColor: "rgba(255, 99, 132, 1)",
+                    borderWidth: 1
+                  }]
+                },
+                options: {
+                  scales: {
+                    yAxes: [{
+                      display: true,
+                      gridLines: {
+                        display: false,
+                        drawBorder: true,
+                      },
+                      ticks: {
+                        beginAtZero: true
+                      }
+                    }],
+                    xAxes: [{
+                      display: true,
+                      gridLines: {
+                        display: false,
+                        drawBorder: true,
+                      }
+                    }]
+                  }
+                }
+              });
+            </script>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        <p><span class="text-dark fw-semi-bold">Description:</span></p>
+        <p class="card-text">{{object.description}}</p>
+        <p><span class="text-dark fw-semi-bold">Attribution & Credits:</span></p>
+        <p class="card-text">{{object.attribution}}</p>
+        <p><span class="text-dark fw-semi-bold">Data Sources Used:</span></p>
+        <p>{% for item in object.data_sources.all %}<li>{{item.description}} by {{item.name}}</li>{% endfor %}</p>
+        {% if object.user.id == request.user.id %}
+        <span class="d-flex mt-10">
+          <span class="ms-auto">
+            <a class="card-link" href="{% url 'edit-insight' id=object.id %}">Edit Dataset <i class="bi-pencil small ms-1"></i></a>
+          </span>
+        </span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

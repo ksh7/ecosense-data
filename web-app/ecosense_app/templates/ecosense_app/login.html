@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container content-space-3 content-space-t-lg-4 content-space-b-lg-3">
+  {% if messages %}
+    {% for message in messages %}
+    <div class="col-md-6 offset-md-3">
+      <div class="alert alert-{{ message.tags }}" role="alert">
+        {{ message }}
+      </div>
+    </div>
+    {% endfor %}
+  {% endif %}
+    <div class="flex-grow-1 mx-auto" style="max-width: 28rem;">
+      <div class="text-center mb-5 mb-md-7">
+        <h1 class="h2">Login</h1>
+      </div>
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Demo Login Credentials:<br/><br/>
+        Email: <strong>researcher1@university.org</strong><br/>
+        Password: <strong>pass1234</strong><br/>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <form action="" method="POST" class="form">
+        {% csrf_token %}
+        <div class="mb-4">
+          <label class="form-label" for="signupSimpleLoginEmail">Your Email</label>
+          <input type="email" class="form-control form-control-lg" name="email" placeholder="researcher@university.org" required>
+          <span class="invalid-feedback">Please enter a valid email address.</span>
+        </div>
+        <div class="mb-4">
+          <div class="d-flex justify-content-between align-items-center">
+            <label class="form-label" for="signupSimpleLoginPassword">Your Password</label>
+            <a class="form-label-link" href="#">Forgot Password?</a>
+          </div>
+          <div class="input-group input-group-merge" data-hs-validation-validate-class>
+            <input type="password" class="js-toggle-password form-control form-control-lg" name="password" placeholder="password" required>
+            <a id="changePassTarget" class="input-group-append input-group-text" href="javascript:;">
+            <i id="changePassIcon" class="bi-eye"></i>
+            </a>
+          </div>
+        </div>
+        <div class="d-grid mb-3">
+          <button type="submit" class="btn btn-primary btn-lg">Log in</button>
+        </div>
+        <div class="text-center">
+          <p>Don't have an account yet? <a class="link" href="{% url 'register' %}">Join here</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+{% endblock%}

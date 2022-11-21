@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<div class="container content-space-1">
+  {% if messages %}
+    {% for message in messages %}
+    <div class="col-md-6 offset-md-3">
+      <div class="alert alert-{{ message.tags }}" role="alert">
+        {{ message }}
+      </div>
+    </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="w-md-75 text-center mx-md-auto mb-9">
+    <h2>My Research Insights</h2>
+    <a class="btn btn-sm btn-soft-primary" href="{% url 'add-insight' %}">Add New Insight</a>
+  </div>
+  
+  <div class="row mt-10">
+  {% for insight in object_list %}
+    <div class="card my-3">
+      <div class="card-body">
+        <span class="card-subtitle">{% if insight.is_public %}<span class="badge bg-soft-success text-success">Public - Visible To All</span>{% else %}<span class="badge bg-soft-secondary text-secondary">Private</span>{% endif %}</span>
+        <h3 class="card-title">{{insight.title}}</h3>
+        <p class="card-text">{{insight.finding}}</p>
+        <p>
+          {% for topic in insight.dataset.topics.all %}
+            <span class="badge bg-soft-secondary text-secondary rounded-pill me-1">{{topic.title}}</span>
+          {% endfor %}
+        </p>
+        <span class="d-flex">
+          <span class="ms-auto">
+            <a class="card-link" href="{% url 'view-insight' id=insight.id %}">View Dataset <i class="bi-eye small ms-1"></i></a>
+            <a class="card-link" href="{% url 'edit-insight' id=insight.id %}">Edit Dataset <i class="bi-pencil small ms-1"></i></a>
+          </span>
+        </span>
+      </div>
+    </div>
+  {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

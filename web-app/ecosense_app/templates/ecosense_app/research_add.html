@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<div class="container content-space-1">
+    {% if messages %}
+      {% for message in messages %}
+      <div class="col-md-6 offset-md-3">
+        <div class="alert alert-{{ message.tags }}" role="alert">
+          {{ message }}
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="flex-grow-1 mx-auto">
+      <div class="text-center mb-5 mb-md-7">
+        <h1 class="h2">Add Your Insights</h1>
+      </div>
+      <div class="d-flex align-items-stretch">
+        <div class="card my-3">
+          <div class="card-body">
+            <form method="post" action="" class="bg-norm">
+              {% csrf_token %}
+              
+              {% bootstrap_form form %}
+              {% bootstrap_button button_type="submit" content="Save" %}
+            </form>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+</div>
+
+{% endblock %}

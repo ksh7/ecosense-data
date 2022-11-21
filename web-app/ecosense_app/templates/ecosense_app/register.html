@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container content-space-3 content-space-t-lg-4 content-space-b-lg-3">
+    {% if messages %}
+      {% for message in messages %}
+      <div class="col-md-6 offset-md-3">
+        <div class="alert alert-{{ message.tags }}" role="alert">
+          {{ message }}
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
+    <div class="flex-grow-1 mx-auto" style="max-width: 28rem;">
+      <div class="text-center mb-5 mb-md-7">
+        <h1 class="h2">Join EcoSense</h1>
+      </div>
+      <form action="" method="POST" class="form">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">Your email</label>
+          <input type="email" class="form-control form-control-lg" name="email"  required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <div class="input-group input-group-merge">
+            <input type="password" class="js-toggle-password form-control form-control-lg" name="password" placeholder="8+ characters required" required >
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-control form-control-lg" name="first_name" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Last Name</label>
+          <input type="text" class="form-control form-control-lg" name="last_name" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">University or College or Organization Name</label>
+          <input type="text" class="form-control form-control-lg" name="organization" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Bio</label>
+          <textarea class="form-control form-control-lg" name="bio" required></textarea>
+        </div>
+        <div class="form-check mb-3">
+          <input type="checkbox" class="form-check-input" id="signupHeroFormPrivacyCheck" name="signupFormPrivacyCheck" required>
+          <label class="form-check-label small" for="signupHeroFormPrivacyCheck"> By submitting this form I have read and acknowledged the <a href=#>Privacy Policy</a></label>
+          <span class="invalid-feedback">Please accept our Privacy Policy.</span>
+        </div>
+        <div class="d-grid mb-3">
+          <button type="submit" class="btn btn-primary btn-lg">Sign up</button>
+        </div>
+        <div class="text-center">
+          <p>Already have an account? <a class="link" href="{% url 'login' %}">Log in here</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock%}

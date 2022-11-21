@@ -1,0 +1,10 @@
+Django
+psycopg2
+requests
+awscli
+requests-aws4auth
+Pillow
+django-environ
+django_bootstrap5
+django-extensions
+whitenoise
